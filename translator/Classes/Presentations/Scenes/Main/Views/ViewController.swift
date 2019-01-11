@@ -10,28 +10,33 @@ import UIKit
 
 class ViewController: UITabBarController {
     var subview: ViewControllerSubview = ViewControllerSubview()
+    var viewController: ViewController  = ViewController()
     
-    private let animator: UIViewPropertyAnimator
     
-    init(duration: TimeInterval, closure: @escaping () -> (), commpletion: @escaping () -> () ) {
-        let timing = UICubicTimingParameters(animationCurve: .easeOut)
-        self.animator = UIViewPropertyAnimator(duration: duration, timingParameters: timing)
-        self.animator.addAnimations {
-            let greetings = ["Hello", "こんにちは", "ជំរាបសួរ", "你好", "नमस्ते", "ສະບາຍດີ", "Bonjour", "สวัสดี"]
-            var txtAnimator: ViewControllerSubview = ViewControllerSubview()
-            var i = 0
-            func update() {
-                if(i==8){
-                    i=0
-                }
-                txtAnimator.label.text = greetings[i]
-                i += 1
-            }
-        }
-        self.animator.addCompletion { (positon) in
-            if positon == .end {  commpletion() }
+    override func viewDidAppear(_ animated: Bool) {
+        Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(ViewController.timerUpdate), userInfo: nil, repeats: true)
+    }
+    
+    @objc func timerUpdate() {
+        let animate: CABasicAnimation = CABasicAnimation(keyPath: "text")
+        animate.duration = 5.0
+        animate.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        animate.repeatCount = .infinity
+        
+        let transition = CATransition()
+        transition.type = CATransitionType.fade
+        transition.subtype = CATransitionSubtype.fromRight
+        self.view.layer.add(transition, forKey: nil)
+        
+        self.subview.label.layer.add(animate, forKey: "changeTextTransition")
+        let greetings = ["Hello", "ជំរាបសួរ", "こんにちは", "வணக்கம்", "你好", "नमस्ते", "ສະບາຍດີ", "Bonjour", "สวัสดี", "مرحبا", "여보세요"]
+        if let randomGretting = greetings.randomElement() {
+            self.subview.label.text = randomGretting
         }
     }
+    
+    
+    
 }
 
 extension ViewController {
@@ -44,6 +49,8 @@ extension ViewController {
         self.view.addSubview(self.subview.textBtn)
         self.view.addSubview(self.subview.cameraBtn)
         self.view.addSubview(self.subview.chatBtn)
+        
+    
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "backgroundImage")!)
         let historyViewController = HistoryViewController()

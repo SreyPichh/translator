@@ -10,6 +10,10 @@ target 'translator' do
   pod 'SnapKit'
 
   pod 'Then'
+
+  pod 'ReactorKit'
+  pod 'RxCocoa'
+  pod 'RxSwift'
  
 
 end

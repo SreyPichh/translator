@@ -14,7 +14,6 @@ class ViewControllerSubview {
     
     let label = UILabel().then {
         $0.text = "Hello"
-//        $0.text = ["Hello", "こんにちは", "ជំរាបសួរ", "你好", "नमस्ते", "ສະບາຍດີ", "Bonjour", "สวัสดี"]
     }
     
     let voiceBtn = UIButton().then {
@@ -35,7 +34,7 @@ class ViewControllerSubview {
     
     func updateConstraints() {
         self.label.snp.makeConstraints { (make) in
-            make.width.equalTo(50)
+            make.width.equalTo(80)
             make.height.equalTo(50)
             make.centerX.equalToSuperview()
             make.top.equalTo(self.voiceBtn.snp.top).offset(-150)
